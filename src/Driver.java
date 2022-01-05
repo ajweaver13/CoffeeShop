@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Driver {
@@ -15,5 +16,17 @@ public class Driver {
         menu.add(new MenuItem("Breakfast Sandwich", Type.FOOD, 10.00));
 
         CoffeeShop coffeeShop = new CoffeeShop("Bright Morning", menu);
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+
+                JFrame frame = new JFrame("CoffeShopGUI");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.getContentPane().add(new CoffeShopGUI(coffeeShop).getter());
+                frame.pack();
+                frame.setVisible(true);
+            }
+        });
     }
 }
