@@ -1,5 +1,6 @@
-import javax.swing.*;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Driver {
     public static void main(String[] args) {
@@ -16,17 +17,58 @@ public class Driver {
         menu.add(new MenuItem("Breakfast Sandwich", Type.FOOD, 10.00));
 
         CoffeeShop coffeeShop = new CoffeeShop("Bright Morning", menu);
+        App(coffeeShop);
+    }
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
+    public static void App(CoffeeShop coffeeShop) {
+        CoffeeShop shop = coffeeShop;
+        NumberFormat money = NumberFormat.getCurrencyInstance();
+        System.out.println("\n\tWelcome to "+coffeeShop.getName()+"!\n");
+        System.out.println("======================================");
+        System.out.println("||\t\t\tToday's Menu\t\t\t||");
+        System.out.println("======================================");
+        System.out.println("|\t\t\t\tDrinks\t\t\t\t |");
+        System.out.println("--------------------------------------");
+        List<MenuItem> drinks = shop.drinksOnly();
 
-                JFrame frame = new JFrame("CoffeShopGUI");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.getContentPane().add(new CoffeShopGUI(coffeeShop).getter());
-                frame.pack();
-                frame.setVisible(true);
+
+        for (MenuItem drink : drinks) {
+            String price = money.format(drink.getPrice());
+            System.out.printf("|\t%-20s%11s\t |\n", drink.getItem(), price);
+        }
+        System.out.println("--------------------------------------");
+        System.out.println("|\t\t\t\tFoods\t\t\t\t |");
+        System.out.println("--------------------------------------");
+        List<MenuItem> foods = shop.foodOnly();
+
+        for (MenuItem food : foods) {
+            String price = money.format(food.getPrice());
+            System.out.printf("|\t%-20s%11s\t |\n", food.getItem(), price);
+        }
+        System.out.println("--------------------------------------\n");
+
+        System.out.println("Today's Cheapest Item is the "+coffeeShop.cheapestItem()+"!\n");
+        String[] items = {"Latte", "Tea", "Bagel", "Cookie", "Donut"};
+        for (String item : items) {
+            String result = coffeeShop.addOrder(item);
+            if (result == null) {
+                System.out.println(item+" has been ordered.");
+            } else {
+                System.out.println(result);
             }
-        });
+        }
+
+        System.out.println("\nThe total amount is "+money.format(coffeeShop.dueAmount()));
+        System.out.println("The full order:");
+        MenuItem[] list = coffeeShop.listOrders();
+        for (MenuItem l : list) {
+            System.out.println("\t"+l);
+        }
+        System.out.println();
+        for (int x = 0; x < 5; x++) {
+            System.out.println(coffeeShop.fulfillOrder());
+        }
+
+        System.out.println("\nThank you and come back again!");
     }
 }

@@ -15,13 +15,17 @@ public class CoffeeShop {
         orders = new LinkedBlockingQueue<>();
     }
 
+    public String getName(){
+        return name;
+    }
+
     /**
      * adds the name of the item to the end of the orders array if it exists on the menu.
      * Otherwise, return "This item is currently unavailable!"
      */
-    public String addOrder(MenuItem order) {
+    public String addOrder(String order) {
         for (MenuItem item : menu) {
-            if (item.getItem() == order.getItem()) {
+            if (item.getItem() == order) {
                 orders.add(item);
                 return null;
             }
@@ -45,7 +49,7 @@ public class CoffeeShop {
      * returns the list of orders taken, otherwise, an empty array.
      */
     public MenuItem[] listOrders() {
-        return (MenuItem[]) orders.toArray();
+        return orders.toArray(new MenuItem[orders.size()]);
     }
 
     /**
